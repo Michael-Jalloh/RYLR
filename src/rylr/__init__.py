@@ -6,21 +6,27 @@ class RYLR(object):
     """
     RYLR896 and RYLR406
     """
-    def __init__(self, port: str="/dev/ttyUSB0", baud: int=115200, addr: str="100", network: str="10",
-                  buadrate: str = None, band: str = None, mode: str = None, parameter: str = None, password: str = None,
+    def __init__(self, port: str="/dev/ttyUSB0", baud: int=115200, addr: str="100", network: str="10", blocking=True,
+                  baudrate: str = None, band: str = None, mode: str = None, parameter: str = None, password: str = None,
                   power: str = 15):
         self.port = Serial(port, baud, timeout=0.5)
+        self.blocking = blocking
         if addr: self.address = addr
         if network: self.network = network
-        if buadrate: self.buadrate = buadrate
+        if baudrate: self.baudrate = baudrate
         if band: self.band = band
         if mode: self.mode = mode
         if parameter: self.parameter = parameter
         if password: self.password = password
         if power: self.power = power
+        
             
     @property
     def address(self):
+        if self.blocking:
+            self.AT_command("AT+ADDRESS?")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command("AT+ADDRESS?")
     
     @address.setter
@@ -28,10 +34,18 @@ class RYLR(object):
         """
         0~65535(default 0)
         """
+        if self.blocking:
+            self.AT_command(f"AT+ADDRESS={addr}")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command(f"AT+ADDRESS={addr}")
     
     @property
     def network(self):
+        if self.blocking:
+            self.AT_command(f"AT+NETWORKID?")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command("AT+NETWORKID?")
     
     @network.setter
@@ -39,14 +53,22 @@ class RYLR(object):
         """
         0~16(default 0)
         """
+        if self.blocking:
+            self.AT_command(f"AT+NETWORKID={network}")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command(f"AT+NETWORKID={network}")
     
     @property
-    def buadrate(self):
+    def baudrate(self):
+        if self.blocking:
+            self.AT_command(f"AT+IPR?")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command("AT+IPR?")
 
-    @buadrate.setter
-    def buadrate(self, buadrate):
+    @baudrate.setter
+    def baudrate(self, baudrate):
         """
         300
         1200
@@ -58,10 +80,18 @@ class RYLR(object):
         57600
         115200(default).
         """
-        return self.AT_command(f"AT+IPR={buadrate}")
+        if self.blocking:
+            self.AT_command(f"AT+IPR={baudrate}")
+            sleep(0.1)
+            return self.recv()
+        return self.AT_command(f"AT+IPR={baudrate}")
     
     @property
     def mode(self):
+        if self.blocking:
+            self.AT_command(f"AT+MODE?")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command("AT+MODE?")
 
     @mode.setter
@@ -73,10 +103,18 @@ class RYLR(object):
         pin3(RX) receive any input data, the
         module will be woken up.
         """
+        if self.blocking:
+            self.AT_command(f"AT+MODE={mode}")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command(f"AT+MODE={mode}")
     
     @property
     def band(self):
+        if self.blocking:
+            self.AT_command(f"AT+BAND?")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command("AT+BAND?")
     
     @band.setter
@@ -86,19 +124,35 @@ class RYLR(object):
         470000000: 470000000Hz(default: RYLR40x)
         915000000: 915000000Hz(default: RYLY89x)
         """
+        if self.blocking:
+            self.AT_command(f"AT+BAND={band}")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command(f"AT+BAND={band}")
 
     @property
     def parameter(self):
+        if self.blocking:
+            self.AT_command(f"AT+PARAMETER?")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command("AT+PARAMETER?")
     
     @parameter.setter
     def parameter(self, parameter: str):
+        if self.blocking:
+            self.AT_command(f"AT+PARAMETER={parameter}")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command(f"AT+PARAMETER={parameter}")
     
     @property
     def password(self):
-        return self.AT_command("AT+CPIN")
+        if self.blocking:
+            self.AT_command(f"AT+CPIN?")
+            sleep(0.1)
+            return self.recv()
+        return self.AT_command("AT+CPIN?")
     
     @password.setter
     def password(self, password: str):
@@ -111,10 +165,18 @@ class RYLR(object):
         we use md5 to generate hexdegist
         """
         password_hexdigest = md5(password).hexdigest()
+        if self.blocking:
+            self.AT_command(f"AT+CPIN={password_hexdigest}")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command(f"AT+CPIN={password_hexdigest}")
     
     @property
     def power(self):
+        if self.blocking:
+            self.AT_command(f"AT+CRFOP?")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command("AT+CRFOP?")
     
     @power.setter
@@ -131,6 +193,10 @@ class RYLR(object):
             power = 15
         elif power < 0:
             power = 0
+        if self.blocking:
+            self.AT_command(f"AT+CRFOP={power}")
+            sleep(0.1)
+            return self.recv()
         return self.AT_command(f"AT+CRFOP={power}")
 
     def send(self, data, address=0):

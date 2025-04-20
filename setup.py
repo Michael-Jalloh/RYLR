@@ -9,7 +9,7 @@ with open(path.join(this_directory, 'README.md')) as f:
 setup(
     name="rylr",
     packages=["rylr"],
-    version="1.0.0",
+    version="1.0.1",
     license="MIT",
     description="Python library for RYLR LoRa transceivers to simplifies communication with RYLR modules using Python",
     long_description=long_description,
