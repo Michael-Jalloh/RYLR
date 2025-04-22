@@ -8,7 +8,7 @@ class RYLR(object):
     """
     def __init__(self, port: str="/dev/ttyUSB0", baud: int=115200, addr: str="100", network: str="10", blocking=True,
                   baudrate: str = None, band: str = None, mode: str = None, parameter: str = None, password: str = None,
-                  power: str = 15):
+                  power: str = None):
         self.port = Serial(port, baud, timeout=0.5)
         self.blocking = blocking
         if addr: self.address = addr
