@@ -1,3 +1,37 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "rylr"
+version = "1.0.3"
+description="Python library for RYLR LoRa transceivers to simplifies communication with RYLR modules using Python"
+readme = "README.md"
+requires-python = ">=3.7"
+license="MIT"
+dependencies = [
+    "pyserial>=3.5",
+]
+authors = [{ name = "Michael Jalloh", email = "michaeljalloh19@gmail.com" }]
+maintainers = [{ name = "Michael Jalloh", email = "michaeljalloh19@gmail.com" }]
+classifiers= [
+        "Development Status :: 4 - Beta",      
+        "Intended Audience :: Developers",      
+        "Topic :: Software Development :: Build Tools",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+    ]
+keywords=["RYLR","serial","link","communication","RYLR896","RYLR406"]
+[project.urls]
+issues="https://github.com/Michael-Jalloh/RYLR/issues"
+source="https://github.com/Michael-Jalloh/RYLR"
+Home-page="https://github.com/Michael-Jalloh/RYLR"
+[tool.setuptools.packages.find]
+where=["src"]
+include=["rylr"]
+
