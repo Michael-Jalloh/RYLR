@@ -39,7 +39,7 @@ modem.close()
 
 ### Constructor
 ```python
-RYLR(port="/dev/ttyUSB0", baud=115200, addr="100", network="10",  blocking=True, baudrate=None, band=None, mode=None, parameter=None, password=None, power=15)
+RYLR(port="/dev/ttyUSB0", baudrate=115200, addr="100", network="10",  wait_time=0.1, band="", mode="", parameter="", password="", power=15)
 ```
 
 ### Properties
